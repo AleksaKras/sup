@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SUP-прокат у Гідропарку | Extremetour</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+  :root{
+    --ink:#081a20;
+    --ink-2:#0d2732;
+    --water:#123a45;
+    --water-light:#1c4c58;
+    --line:#2c6e78;
+    --foam:#eef6f5;
+    --foam-dim:#b9cdd0;
+    --sunset:#ff8a5c;
+    --sunset-deep:#e85d3d;
+    --sunset-soft:rgba(255,138,92,.14);
+    --radius:18px;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--ink);
+    color:var(--foam);
+    font-family:'Manrope',sans-serif;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Oswald',sans-serif;
+    text-transform:uppercase;
+    letter-spacing:.01em;
+    line-height:1.02;
+  }
+  a{color:inherit;text-decoration:none;}
+  ul{list-style:none;}
+  img{max-width:100%;display:block;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 28px;}
+  .eyebrow{
+    font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--sunset);display:flex;align-items:center;gap:10px;margin-bottom:14px;
+  }
+  .eyebrow::before{content:'';width:22px;height:2px;background:var(--sunset);display:inline-block;}
+  ::selection{background:var(--sunset);color:var(--ink);}
+
+  /* reveal on scroll */
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.8,.2,1);}
+  .reveal.in{opacity:1;transform:translateY(0);}
+
+  /* ---------- NAV ---------- */
+  header{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    background:rgba(8,26,32,.55);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid rgba(255,255,255,.06);
+    transition:background .3s ease;
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:16px 28px;max-width:1180px;margin:0 auto;}
+  .logo{display:flex;align-items:center;gap:10px;font-family:'Oswald';font-weight:600;letter-spacing:.08em;font-size:18px;}
+  .logo-mark{width:34px;height:34px;border-radius:50%;background:radial-gradient(circle at 35% 30%,var(--sunset),var(--sunset-deep));display:flex;align-items:center;justify-content:center;font-family:'Oswald';font-weight:700;font-size:13px;color:var(--ink);}
+  nav.links{display:flex;gap:34px;}
+  nav.links a{font-size:14px;font-weight:600;letter-spacing:.03em;color:var(--foam-dim);transition:color .25s;position:relative;}
+  nav.links a::after{content:'';position:absolute;left:0;bottom:-6px;width:0;height:1px;background:var(--sunset);transition:width .25s;}
+  nav.links a:hover{color:var(--foam);}
+  nav.links a:hover::after{width:100%;}
+  .phone-btn{
+    display:flex;align-items:center;gap:8px;background:var(--sunset);color:var(--ink);
+    padding:10px 20px;border-radius:999px;font-weight:700;font-size:14px;
+    box-shadow:0 8px 24px -8px rgba(255,138,92,.6);transition:transform .25s,box-shadow .25s;
+    white-space:nowrap;
+  }
+  .phone-btn:hover{transform:translateY(-2px);box-shadow:0 12px 30px -6px rgba(255,138,92,.75);}
+  .burger{display:none;font-size:24px;background:none;border:none;color:var(--foam);cursor:pointer;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;min-height:100vh;display:flex;align-items:center;
+    padding-top:100px;overflow:hidden;
+    background:
+      radial-gradient(circle at 80% 20%, rgba(255,138,92,.10), transparent 45%),
+      linear-gradient(180deg,var(--ink) 0%, var(--ink-2) 100%);
+  }
+  .ripple-field{position:absolute;inset:0;z-index:0;pointer-events:none;}
+  .ripple-field svg{width:100%;height:100%;}
+  .ripple-ring{fill:none;stroke:var(--line);stroke-width:1;opacity:.55;transform-origin:center;}
+  @keyframes rippleOut{
+    0%{r:20;opacity:.7;stroke-width:1.4;}
+    100%{r:480;opacity:0;stroke-width:.3;}
+  }
+  .hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:1.1fr .9fr;gap:60px;align-items:center;}
+  .hero h1{font-size:clamp(42px,6.4vw,84px);}
+  .hero h1 span{color:var(--sunset);}
+  .hero p.lead{margin-top:22px;font-size:17px;color:var(--foam-dim);max-width:460px;line-height:1.6;}
+  .hero-cta{display:flex;gap:16px;margin-top:38px;flex-wrap:wrap;}
+  .btn-primary{
+    background:var(--sunset);color:var(--ink);padding:16px 30px;border-radius:999px;
+    font-weight:700;font-size:15px;display:inline-flex;align-items:center;gap:10px;
+    box-shadow:0 10px 30px -8px rgba(255,138,92,.55);transition:transform .25s,box-shadow .25s;
+  }
+  .btn-primary:hover{transform:translateY(-3px);box-shadow:0 16px 36px -6px rgba(255,138,92,.7);}
+  .btn-ghost{
+    border:1px solid rgba(255,255,255,.22);color:var(--foam);padding:16px 26px;border-radius:999px;
+    font-weight:600;font-size:15px;transition:border-color .25s,background .25s;
+  }
+  .btn-ghost:hover{border-color:var(--sunset);background:var(--sunset-soft);}
+
+  .hero-card{
+    position:relative;background:var(--water);border-radius:24px;padding:34px;
+    border:1px solid rgba(255,255,255,.08);
+  }
+  .hero-card::before{
+    content:'';position:absolute;inset:-1px;border-radius:24px;padding:1px;
+    background:linear-gradient(135deg,rgba(255,138,92,.5),transparent 60%);
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;
+  }
+  .price-row{display:flex;justify-content:space-between;align-items:baseline;padding:16px 0;border-bottom:1px solid rgba(255,255,255,.08);}
+  .price-row:last-child{border-bottom:none;}
+  .price-row .label{font-size:14px;color:var(--foam-dim);}
+  .price-row .val{font-family:'Oswald';font-size:20px;font-weight:600;color:var(--sunset);}
+  .hero-card h3{font-size:15px;letter-spacing:.06em;margin-bottom:6px;}
+  .hero-card .sub{font-size:12px;color:var(--foam-dim);text-transform:none;letter-spacing:0;margin-bottom:20px;}
+  .board-tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);background:var(--sunset);padding:4px 10px;border-radius:6px;margin-bottom:24px;}
+
+  .scroll-cue{position:absolute;bottom:34px;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--foam-dim);font-size:11px;letter-spacing:.15em;text-transform:uppercase;}
+  .scroll-line{width:1px;height:34px;background:linear-gradient(var(--foam-dim),transparent);animation:scrollPulse 2s infinite;}
+  @keyframes scrollPulse{0%,100%{opacity:.3}50%{opacity:1}}
+
+  /* ---------- WAVE DIVIDER ---------- */
+  .wave-divider{position:relative;height:90px;margin-top:-2px;}
+  .wave-divider svg{width:100%;height:100%;}
+  .wave-path{fill:none;stroke:var(--line);stroke-width:1.5;stroke-dasharray:1600;stroke-dashoffset:1600;transition:stroke-dashoffset 1.4s ease;}
+  .wave-divider.in .wave-path{stroke-dashoffset:0;}
+
+  /* ---------- SECTION generic ---------- */
+  section{position:relative;padding:120px 0;}
+  .section-head{max-width:640px;margin-bottom:64px;}
+  .section-head h2{font-size:clamp(30px,4vw,48px);}
+  .section-head p{margin-top:16px;color:var(--foam-dim);font-size:16px;line-height:1.6;}
+
+  /* ---------- EVENTS ---------- */
+  #zahody{background:var(--ink-2);}
+  .events-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;}
+  .event-card{
+    background:var(--water);border-radius:var(--radius);overflow:hidden;
+    border:1px solid rgba(255,255,255,.06);
+    transition:transform .4s cubic-bezier(.2,.8,.2,1),border-color .4s;
+    display:flex;flex-direction:column;
+  }
+  .event-card:hover{transform:translateY(-8px);border-color:rgba(255,138,92,.4);}
+  .event-media{position:relative;height:190px;background:linear-gradient(140deg,var(--water-light),var(--water));overflow:hidden;}
+  .event-media .glow{position:absolute;inset:0;background:radial-gradient(circle at 30% 20%,rgba(255,138,92,.35),transparent 60%);opacity:0;transition:opacity .4s;}
+  .event-card:hover .event-media .glow{opacity:1;}
+  .event-media svg{position:absolute;bottom:-2px;left:0;width:100%;}
+  .event-body{padding:26px 24px 28px;flex:1;display:flex;flex-direction:column;}
+  .event-tag{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sunset);margin-bottom:10px;}
+  .event-body h3{font-size:20px;text-transform:none;font-family:'Manrope';font-weight:800;letter-spacing:0;margin-bottom:12px;line-height:1.3;}
+  .event-time{font-size:13px;color:var(--foam-dim);margin-bottom:16px;}
+  .event-price{margin-top:auto;display:flex;align-items:center;justify-content:space-between;padding-top:16px;border-top:1px solid rgba(255,255,255,.08);}
+  .event-price .amount{font-family:'Oswald';font-size:18px;color:var(--sunset);}
+  .event-price .status{font-size:12px;color:var(--foam-dim);}
+
+  /* ---------- ABOUT SUP ---------- */
+  .sup-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:70px;align-items:center;}
+  .benefit-list li{
+    display:flex;gap:18px;padding:20px 0;border-top:1px solid rgba(255,255,255,.08);
+  }
+  .benefit-list li:last-child{border-bottom:1px solid rgba(255,255,255,.08);}
+  .benefit-num{font-family:'Oswald';font-size:14px;color:var(--sunset);min-width:28px;}
+  .benefit-list p{color:var(--foam-dim);font-size:15.5px;line-height:1.6;}
+  .sup-visual{
+    position:relative;aspect-ratio:1/1;border-radius:28px;
+    background:
+      radial-gradient(circle at 50% 45%, rgba(255,138,92,.12), transparent 60%),
+      linear-gradient(160deg,var(--water-light),var(--water));
+    display:flex;align-items:center;justify-content:center;overflow:hidden;
+    border:1px solid rgba(255,255,255,.08);
+  }
+  .sup-visual svg{width:70%;}
+
+  /* ---------- ABOUT US / TIMELINE ---------- */
+  #proNas{background:var(--ink-2);}
+  .stat-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:60px;}
+  .stat{background:var(--water);border-radius:var(--radius);padding:34px 28px;border:1px solid rgba(255,255,255,.06);}
+  .stat .num{font-family:'Oswald';font-size:44px;color:var(--sunset);}
+  .stat .lbl{font-size:13px;color:var(--foam-dim);margin-top:8px;letter-spacing:.03em;}
+  .about-text{max-width:760px;color:var(--foam-dim);font-size:16px;line-height:1.75;}
+  .about-text a{color:var(--sunset);border-bottom:1px solid var(--sunset);}
+
+  /* ---------- EQUIPMENT ---------- */
+  .equip-grid{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center;}
+  .equip-visual{position:relative;}
+  .equip-visual svg{width:100%;filter:drop-shadow(0 24px 40px rgba(0,0,0,.35));}
+  .equip-badges{display:flex;gap:12px;margin-top:26px;flex-wrap:wrap;}
+  .equip-badge{font-size:12px;font-weight:700;letter-spacing:.04em;color:var(--foam);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);padding:8px 16px;border-radius:999px;}
+
+  /* ---------- CONTACT ---------- */
+  #contact{background:var(--ink-2);}
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;}
+  .contact-card{background:var(--water);border-radius:var(--radius);padding:36px;border:1px solid rgba(255,255,255,.06);}
+  .contact-row{display:flex;align-items:center;gap:16px;padding:18px 0;border-top:1px solid rgba(255,255,255,.08);}
+  .contact-row:first-child{border-top:none;}
+  .contact-icon{width:42px;height:42px;border-radius:50%;background:var(--sunset-soft);display:flex;align-items:center;justify-content:center;color:var(--sunset);flex-shrink:0;}
+  .contact-row .t{font-size:12px;color:var(--foam-dim);letter-spacing:.05em;text-transform:uppercase;}
+  .contact-row .v{font-size:16px;font-weight:600;margin-top:2px;}
+  .map-box{border-radius:var(--radius);overflow:hidden;border:1px solid rgba(255,255,255,.08);height:100%;min-height:340px;}
+  .map-box iframe{width:100%;height:100%;border:0;filter:grayscale(.3) invert(.92) contrast(.9);}
+
+  /* ---------- CTA / FOOTER ---------- */
+  .cta-section{
+    background:linear-gradient(160deg,var(--water-light),var(--ink));
+    border-radius:32px;margin:0 auto 0;max-width:1180px;padding:70px 60px;
+    text-align:center;position:relative;overflow:hidden;
+  }
+  .cta-section h2{font-size:clamp(28px,4vw,44px);margin-bottom:16px;}
+  .cta-section p{color:var(--foam-dim);max-width:480px;margin:0 auto 34px;}
+  .cta-form{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;max-width:520px;margin:0 auto;}
+  .cta-form input{
+    background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);
+    color:var(--foam);padding:15px 18px;border-radius:999px;font-size:14px;flex:1;min-width:160px;
+  }
+  .cta-form input::placeholder{color:var(--foam-dim);}
+  .cta-form button{
+    background:var(--sunset);color:var(--ink);border:none;padding:15px 28px;border-radius:999px;
+    font-weight:700;font-size:14px;cursor:pointer;transition:transform .2s;
+  }
+  .cta-form button:hover{transform:translateY(-2px);}
+
+  footer{padding:60px 0 40px;text-align:center;color:var(--foam-dim);font-size:13px;}
+  footer .social{display:flex;gap:20px;justify-content:center;margin-bottom:24px;}
+  footer .social a{color:var(--foam-dim);transition:color .25s;}
+  footer .social a:hover{color:var(--sunset);}
+
+  @media(max-width:920px){
+    nav.links,.phone-btn{display:none;}
+    .burger{display:block;}
+    .hero-grid,.sup-grid,.equip-grid,.contact-grid{grid-template-columns:1fr;}
+    .events-grid{grid-template-columns:1fr;}
+    .stat-strip{grid-template-columns:1fr;}
+    .hero{padding-top:120px;}
+    section{padding:80px 0;}
+  }
+
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important;}
+    .reveal{opacity:1;transform:none;}
+  }
+
+  a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--sunset);outline-offset:3px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <a href="#" class="logo"><span class="logo-mark">SUP</span> EXTREMETOUR</a>
+    <nav class="links">
+      <a href="#zahody">Наші заходи</a>
+      <a href="#sup">Про SUP</a>
+      <a href="#proNas">Про нас</a>
+      <a href="#contact">Контакти</a>
+    </nav>
+    <a href="tel:+380682983388" class="phone-btn">+38 (068) 298-33-88</a>
+    <button class="burger">☰</button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="ripple-field" id="rippleField"></div>
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">Гідропарк · Дніпро · Київ</div>
+      <h1 class="reveal">SUP-прокат<br>на <span>воді</span> Гідропарку</h1>
+      <p class="lead reveal">Дошка, весло, рятувальний жилет і гермочохол — вже в комплекті. Виходьте на воду за 5 хвилин після дзвінка, без жодного досвіду за плечима.</p>
+      <div class="hero-cta reveal">
+        <a href="tel:+380682983388" class="btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.5 21 3 13.5 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.4 0 .8-.2 1L6.6 10.8Z" fill="currentColor"/></svg>
+          Забронювати дошку
+        </a>
+        <a href="#zahody" class="btn-ghost">Дивитись заходи</a>
+      </div>
+    </div>
+    <div class="hero-card reveal">
+      <span class="board-tag">Клас «Преміум»</span>
+      <h3>Одномісна SUP-дошка</h3>
+      <p class="sub">Sup + весло + жилет + гермочохол + інструктаж</p>
+      <div class="price-row"><span class="label">1 година</span><span class="val">350 / 400 ₴</span></div>
+      <div class="price-row"><span class="label">2 години</span><span class="val">650 / 750 ₴</span></div>
+      <div class="price-row"><span class="label">3 години</span><span class="val">850 / 1000 ₴</span></div>
+      <div style="height:26px"></div>
+      <h3>Двомісна «Tandem»</h3>
+      <p class="sub">Той самий комплект, для двох</p>
+      <div class="price-row"><span class="label">1 година</span><span class="val">550 / 700 ₴</span></div>
+      <div class="price-row"><span class="label">2 години</span><span class="val">1000 / 1200 ₴</span></div>
+      <div class="price-row"><span class="label">3 години</span><span class="val">1400 / 1600 ₴</span></div>
+    </div>
+  </div>
+  <div class="scroll-cue"><span>Гортайте</span><div class="scroll-line"></div></div>
+</section>
+
+<div class="wave-divider" id="waveDivider">
+  <svg viewBox="0 0 1180 90" preserveAspectRatio="none">
+    <path class="wave-path" d="M0,45 C 150,10 300,80 450,45 C 600,10 750,80 900,45 C 1000,20 1100,60 1180,45" />
+  </svg>
+</div>
+
+<section id="zahody">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">Заходи</div>
+      <h2>Не лише прокат —<br>досвід на воді</h2>
+      <p>Три формати виходу на воду: спокійне спостереження за заходом сонця, вечірній маршрут навколо острова та безкоштовна реабілітація для ветеранів.</p>
+    </div>
+    <div class="events-grid">
+
+      <div class="event-card reveal">
+        <div class="event-media">
+          <div class="glow"></div>
+          <svg viewBox="0 0 400 190" width="100%"><path d="M0,150 C60,130 120,160 200,140 C280,120 340,150 400,135 L400,190 L0,190 Z" fill="#0d2732"/><circle cx="320" cy="60" r="34" fill="#ff8a5c" opacity="0.85"/></svg>
+        </div>
+        <div class="event-body">
+          <div class="event-tag">Захід сонця</div>
+          <h3>Споглядання заходу біля Русанівських фонтанів</h3>
+          <div class="event-time">Середа та п'ятниця · 19:00–22:00</div>
+          <div class="event-price"><span class="amount">Безкоштовно</span><span class="status">Тимчасово немає місць</span></div>
+        </div>
+      </div>
+
+      <div class="event-card reveal">
+        <div class="event-media">
+          <div class="glow"></div>
+          <svg viewBox="0 0 400 190" width="100%"><path d="M0,140 C70,160 140,120 220,140 C300,160 350,130 400,145 L400,190 L0,190 Z" fill="#0d2732"/><circle cx="90" cy="55" r="30" fill="#ff8a5c" opacity="0.85"/></svg>
+        </div>
+        <div class="event-body">
+          <div class="event-tag">Захід сонця</div>
+          <h3>Маршрут навколо Долобецького острова</h3>
+          <div class="event-time">Вівторок та четвер · 19:00–21:00</div>
+          <div class="event-price"><span class="amount">650 ₴</span><span class="status">Бронювання по телефону</span></div>
+        </div>
+      </div>
+
+      <div class="event-card reveal">
+        <div class="event-media">
+          <div class="glow"></div>
+          <svg viewBox="0 0 400 190" width="100%"><path d="M0,155 C80,135 160,165 240,150 C310,138 360,155 400,148 L400,190 L0,190 Z" fill="#0d2732"/><path d="M180,40 L210,90 L150,90 Z" fill="#ff8a5c" opacity="0.85"/></svg>
+        </div>
+        <div class="event-body">
+          <div class="event-tag">SUP = Реабілітація</div>
+          <h3>Тренування для УБД та ветеранів з інвалідністю</h3>
+          <div class="event-time">Щодня, пн–пт · попереднє бронювання</div>
+          <div class="event-price"><span class="amount">Безкоштовно</span><span class="status">Для УБД — 1 год/день</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="sup">
+  <div class="wrap sup-grid">
+    <div class="sup-visual reveal">
+      <svg viewBox="0 0 200 200" fill="none">
+        <ellipse cx="100" cy="130" rx="70" ry="18" fill="#ff8a5c" opacity="0.18"/>
+        <rect x="85" y="20" width="30" height="115" rx="15" fill="#eef6f5" opacity="0.9"/>
+        <line x1="100" y1="20" x2="100" y2="135" stroke="#1c4c58" stroke-width="2"/>
+        <path d="M60,150 C80,140 120,140 140,150" stroke="#ff8a5c" stroke-width="3" stroke-linecap="round" fill="none"/>
+      </svg>
+    </div>
+    <div>
+      <div class="eyebrow reveal">Про SUP</div>
+      <h2 class="reveal" style="font-size:clamp(28px,3.6vw,42px);margin-bottom:20px;">Один вид спорту —<br>ефект по всіх фронтах</h2>
+      <p class="reveal" style="color:var(--foam-dim);font-size:16px;line-height:1.7;margin-bottom:10px;">Веслування на дошці прокачує тіло і водночас заспокоює — вода перемикає увагу з роботи й побуту на баланс і дихання.</p>
+      <ul class="benefit-list reveal">
+        <li><span class="benefit-num">01</span><p>Покращує роботу серцево-судинної системи за рахунок рівномірного кардіонавантаження.</p></li>
+        <li><span class="benefit-num">02</span><p>Допомагає позбутися зайвих кілограмів — працює майже все тіло, від стоп до плечей.</p></li>
+        <li><span class="benefit-num">03</span><p>Знижує рівень стресу: вода й відкритий простір заспокоюють нервову систему.</p></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="proNas">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">Про нас</div>
+      <h2>25 років на активному відпочинку</h2>
+    </div>
+    <p class="about-text reveal">Туроператор «Екстрим тур» засновано 29 червня 2000 року — це перший спеціалізований туроператор з активного відпочинку в Україні. Одним із напрямків компанії стали розвиток і популяризація відпочинку та реабілітації на SUP дошках. Спорядження надається на умовах <a href="https://docs.google.com/document/d/1TTUebxYmRdM4TQ-FBV5PoCWD6oN2bPmb/edit" target="_blank" rel="noopener">публічної оферти</a>.</p>
+    <div class="stat-strip">
+      <div class="stat reveal"><div class="num">2000</div><div class="lbl">Рік заснування компанії</div></div>
+      <div class="stat reveal"><div class="num">25+</div><div class="lbl">Років активної роботи</div></div>
+      <div class="stat reveal"><div class="num">19 000+</div><div class="lbl">Туристів скористались послугами</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="equip">
+  <div class="wrap equip-grid">
+    <div>
+      <div class="eyebrow reveal">Обладнання</div>
+      <h2 class="reveal" style="font-size:clamp(28px,3.6vw,42px);margin-bottom:20px;">SUP Aquamarina</h2>
+      <p class="reveal" style="color:var(--foam-dim);font-size:16px;line-height:1.7;margin-bottom:24px;">Універсальні дошки, розроблені для професійного використання на воді. Двошаровий ПВХ на міцній тканинній основі та подвійний посилений кант дають додаткову жорсткість — стійке й просте керування навіть для новачків.</p>
+      <div class="equip-badges reveal">
+        <span class="equip-badge">Двошаровий ПВХ</span>
+        <span class="equip-badge">Посилений кант</span>
+        <span class="equip-badge">Для спокійної води</span>
+        <span class="equip-badge">Просте керування</span>
+      </div>
+    </div>
+    <div class="equip-visual reveal">
+      <svg viewBox="0 0 400 200" fill="none">
+        <rect x="30" y="80" width="340" height="45" rx="22" fill="#123a45" stroke="#2c6e78" stroke-width="1.5"/>
+        <rect x="45" y="90" width="310" height="25" rx="12" fill="#1c4c58"/>
+        <path d="M60,102 h280" stroke="#ff8a5c" stroke-width="2" stroke-dasharray="4 6" opacity="0.7"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">Контакти</div>
+      <h2>Чекаємо на вас на воді</h2>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-card reveal">
+        <div class="contact-row">
+          <div class="contact-icon">☎</div>
+          <div><div class="t">Телефон</div><div class="v"><a href="tel:+380682983388">+38 (068) 298-33-88</a></div></div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon">✉</div>
+          <div><div class="t">Email</div><div class="v"><a href="mailto:sup.extremetour@gmail.com">sup.extremetour@gmail.com</a></div></div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon">📍</div>
+          <div><div class="t">Локація</div><div class="v">Прокат SUP дошок, Гідропарк, Київ</div></div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon">◎</div>
+          <div><div class="t">Соцмережі</div><div class="v"><a href="https://www.instagram.com/supextremetour/" target="_blank" rel="noopener">Instagram</a> · <a href="https://www.facebook.com/supextremetour/" target="_blank" rel="noopener">Facebook</a></div></div>
+        </div>
+      </div>
+      <div class="map-box reveal">
+        <iframe src="https://maps.google.com/maps?q=%D0%9F%D1%80%D0%BE%D0%BA%D0%B0%D1%82%20SUP%20%D0%B4%D0%BE%D1%88%D0%BE%D0%BA%20%D0%A1%D0%90%D0%9F%20%D1%82%D0%B0%20%D0%B1%D0%B0%D0%B9%D0%B4%D0%B0%D1%80%D0%BE%D0%BA%20%D0%B2%D1%96%D0%B4%20%D0%95%D0%BA%D1%81%D1%82%D1%80%D0%B8%D0%BC%D0%A2%D1%83%D1%80&t=m&z=15&output=embed&iwloc=near" loading="lazy"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0;">
+  <div class="wrap">
+    <div class="cta-section reveal">
+      <h2>Забронюйте дошку<br>на сьогодні</h2>
+      <p>Залиште номер — передзвонимо протягом 10 хвилин і підберемо зручний час.</p>
+      <form class="cta-form" onsubmit="event.preventDefault(); this.reset(); this.querySelector('button').textContent='Дякуємо, передзвонимо!';">
+        <input type="text" placeholder="Ваше ім'я" required>
+        <input type="tel" placeholder="Ваш телефон" required>
+        <button type="submit">Надіслати</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="social">
+      <a href="https://www.instagram.com/supextremetour/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.facebook.com/supextremetour/" target="_blank" rel="noopener">Facebook</a>
+      <a href="tel:+380682983388">+38 (068) 298-33-88</a>
+    </div>
+    <div>© 2026 SUP Extremetour · Гідропарк, Київ</div>
+  </div>
+</footer>
+
+<script>
+  // reveal on scroll
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  },{threshold:.15});
+  revealEls.forEach(el=>io.observe(el));
+
+  const waveDiv = document.getElementById('waveDivider');
+  const io2 = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ waveDiv.classList.add('in'); io2.unobserve(e.target); } });
+  },{threshold:.4});
+  io2.observe(waveDiv);
+
+  // ripple rings in hero
+  const field = document.getElementById('rippleField');
+  const svgNS = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(svgNS,"svg");
+  svg.setAttribute("viewBox","0 0 1000 700");
+  svg.setAttribute("preserveAspectRatio","xMidYMid slice");
+  field.appendChild(svg);
+
+  function spawnRing(cx,cy,delay){
+    const circle = document.createElementNS(svgNS,"circle");
+    circle.setAttribute("class","ripple-ring");
+    circle.setAttribute("cx",cx);
+    circle.setAttribute("cy",cy);
+    circle.setAttribute("r","20");
+    circle.style.animation = `rippleOut 4.5s ease-out ${delay}s infinite`;
+    svg.appendChild(circle);
+  }
+  spawnRing(760,220,0);
+  spawnRing(760,220,1.5);
+  spawnRing(760,220,3);
+  spawnRing(150,520,0.7);
+  spawnRing(150,520,2.4);
+</script>
+
+</body>
+</html>
