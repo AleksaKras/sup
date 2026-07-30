@@ -1,0 +1,82 @@
+<section id="zahody">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">Заходи</div>
+      <h2>Не лише прокат —<br>досвід на воді</h2>
+      <p>Три формати виходу на воду: спокійне спостереження за заходом сонця, вечірній маршрут навколо острова та безкоштовна реабілітація для ветеранів.</p>
+    </div>
+    <div class="events-grid">
+
+      <div class="event-card reveal">
+        <div class="event-media">
+          <div class="glow"></div>
+          <svg viewBox="0 0 400 190" width="100%"><path d="M0,150 C60,130 120,160 200,140 C280,120 340,150 400,135 L400,190 L0,190 Z" fill="#0d2732"/><circle cx="320" cy="60" r="34" fill="#ff8a5c" opacity="0.85"/></svg>
+        </div>
+        <div class="event-body">
+          <div class="event-tag">Захід сонця</div>
+          <h3>Споглядання заходу біля Русанівських фонтанів</h3>
+          <div class="event-time">Середа та п'ятниця · 19:00–22:00</div>
+          <div class="event-price"><span class="amount">Безкоштовно</span><span class="status">Тимчасово немає місць</span></div>
+        </div>
+      </div>
+
+      <div class="event-card reveal">
+        <div class="event-media">
+          <div class="glow"></div>
+          <svg viewBox="0 0 400 190" width="100%"><path d="M0,140 C70,160 140,120 220,140 C300,160 350,130 400,145 L400,190 L0,190 Z" fill="#0d2732"/><circle cx="90" cy="55" r="30" fill="#ff8a5c" opacity="0.85"/></svg>
+        </div>
+        <div class="event-body">
+          <div class="event-tag">Захід сонця</div>
+          <h3>Маршрут навколо Долобецького острова</h3>
+          <div class="event-time">Вівторок та четвер · 19:00–21:00</div>
+          <div class="event-price"><span class="amount">650 ₴</span><span class="status">Бронювання по телефону</span></div>
+        </div>
+      </div>
+
+      <div class="event-card reveal">
+        <div class="event-media">
+          <div class="glow"></div>
+          <svg viewBox="0 0 400 190" width="100%"><path d="M0,155 C80,135 160,165 240,150 C310,138 360,155 400,148 L400,190 L0,190 Z" fill="#0d2732"/><path d="M180,40 L210,90 L150,90 Z" fill="#ff8a5c" opacity="0.85"/></svg>
+        </div>
+        <div class="event-body">
+          <div class="event-tag">SUP = Реабілітація</div>
+          <h3>Тренування для УБД та ветеранів з інвалідністю</h3>
+          <div class="event-time">Щодня, пн–пт · попереднє бронювання</div>
+          <div class="event-price"><span class="amount">Безкоштовно</span><span class="status">Для УБД — 1 год/день</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<section style="padding-top:0;">
+  <div class="wrap">
+    <div class="cta-section reveal">
+      <h2>Забронюйте дошку<br>на сьогодні</h2>
+      <p>Залиште номер — передзвонимо протягом 10 хвилин і підберемо зручний час.</p>
+      <form class="cta-form" onsubmit="event.preventDefault(); this.reset(); this.querySelector('button').textContent='Дякуємо, передзвонимо!';">
+        <input type="text" placeholder="Ваше ім'я" required>
+        <input type="tel" placeholder="Ваш телефон" required>
+        <button type="submit">Надіслати</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section id="sup">
+  <div class="wrap sup-grid">
+    <div class="sup-visual reveal">
+<img src="" alt="">
+    </div>
+    <div class="font-size:clamp(18px,3.6vw,22px);">
+      <div class="eyebrow reveal">Про SUP</div>
+      <h2 class="reveal" style="font-size:clamp(28px,3.6vw,42px);margin-bottom:20px;">Один вид спорту —<br>ефект по всіх фронтах</h2>
+      <p class="reveal" style="color:var(--foam-dim);font-size:16px;line-height:1.7;margin-bottom:10px;">Веслування на дошці прокачує тіло і водночас заспокоює — вода перемикає увагу з роботи й побуту на баланс і дихання.</p>
+      <ul class="benefit-list reveal">
+        <li><span class="benefit-num">01</span><p>Покращує роботу серцево-судинної системи за рахунок рівномірного кардіонавантаження.</p></li>
+        <li><span class="benefit-num">02</span><p>Допомагає позбутися зайвих кілограмів — працює майже все тіло, від стоп до плечей.</p></li>
+        <li><span class="benefit-num">03</span><p>Знижує рівень стресу: вода й відкритий простір заспокоюють нервову систему.</p></li>
+      </ul>
+    </div>
+  </div>
+</section>
