@@ -250,8 +250,6 @@
 </footer>
 
 <script>
-  const isNarrow = window.matchMedia('(max-width: 920px)').matches;
-
   const cards = document.querySelectorAll('.photo-card');
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -259,7 +257,7 @@
         entry.target.classList.add('visible');
       }
     });
-  }, { threshold: isNarrow ? 0.15 : 0.3, rootMargin: '0px 0px -10% 0px' });
+  }, { threshold: 0.3 });
 
   cards.forEach(card => observer.observe(card));
 
@@ -269,13 +267,13 @@
   const revealEls = document.querySelectorAll('.reveal');
   const io = new IntersectionObserver((entries)=>{
     entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
-  },{ threshold: isNarrow ? 0.05 : 0.15, rootMargin: '0px 0px -5% 0px' });
+  },{threshold:.15});
   revealEls.forEach(el=>io.observe(el));
 
   const waveDiv = document.getElementById('waveDivider');
   const io2 = new IntersectionObserver((entries)=>{
     entries.forEach(e=>{ if(e.isIntersecting){ waveDiv.classList.add('in'); io2.unobserve(e.target); } });
-  },{ threshold: isNarrow ? 0.2 : 0.4 });
+  },{threshold:.4});
   io2.observe(waveDiv);
 
   // ripple rings in hero
