@@ -37,18 +37,15 @@
     display: flex;
     align-items: flex-end;
     padding: 24px;
+    opacity: 0;
+    transform: scale(0.75) translateZ(0);
     will-change: transform, opacity;
     transition: transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.9s ease;
     background-size: cover;
     background-position: center;
   }
 
-  html.js .photo-card {
-    opacity: 0;
-    transform: scale(0.75) translateZ(0);
-  }
-
-  html.js .photo-card.visible {
+  .photo-card.visible {
     opacity: 1;
     transform: scale(1) translateZ(0);
   }
@@ -114,10 +111,9 @@
   .eyebrow::before{content:'';width:22px;height:2px;background:var(--sunset);display:inline-block;}
   ::selection{background:var(--sunset);color:var(--ink);}
 
-  /* reveal on scroll — hidden state applies only once JS has confirmed it's running */
-  .reveal{transition:opacity .8s ease,transform .8s cubic-bezier(.2,.8,.2,1);will-change:opacity,transform;}
-  html.js .reveal{opacity:0;transform:translateY(28px) translateZ(0);}
-  html.js .reveal.in{opacity:1;transform:translateY(0) translateZ(0);}
+  /* reveal on scroll */
+  .reveal{opacity:0;transform:translateY(28px) translateZ(0);will-change:opacity,transform;transition:opacity .8s ease,transform .8s cubic-bezier(.2,.8,.2,1);}
+  .reveal.in{opacity:1;transform:translateY(0) translateZ(0);}
 
   /* ---------- NAV ---------- */
   header{
@@ -189,7 +185,7 @@
     -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
     -webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;
   }
-  .price-row{display:flex;justify-content:space-between;align-items:baseline;padding:16px 0;border-bottom:1px solid rgba(255,255,255,.08);}
+  .price-row{display:flex;justify-content:space-between;align-items:baseline;padding:2% 0;border-bottom:1px solid rgba(255,255,255,.08);}
   .price-row:last-child{border-bottom:none;}
   .price-row .label{font-size:14px;color:var(--foam-dim);}
   .price-row .val{font-size:20px;font-weight:600;color:var(--sunset);}
@@ -204,9 +200,8 @@
   /* ---------- WAVE DIVIDER ---------- */
   .wave-divider{position:relative;height:90px;margin-top:-2px;}
   .wave-divider svg{width:100%;height:100%;}
-  .wave-path{fill:none;stroke:var(--line);stroke-width:1.5;will-change:stroke-dashoffset;transition:stroke-dashoffset 1.4s ease;}
-  html.js .wave-path{stroke-dasharray:1600;stroke-dashoffset:1600;}
-  html.js .wave-divider.in .wave-path{stroke-dashoffset:0;}
+  .wave-path{fill:none;stroke:var(--line);stroke-width:1.5;stroke-dasharray:1600;stroke-dashoffset:1600;will-change:stroke-dashoffset;transition:stroke-dashoffset 1.4s ease;}
+  .wave-divider.in .wave-path{stroke-dashoffset:0;}
 
   /* ---------- SECTION generic ---------- */
   section{position:relative;padding:120px 0;}
